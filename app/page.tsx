@@ -33,8 +33,8 @@ export default function HeroPage() {
       </p>
 
       {/* Hero Image */}
-      <div className="mt-8 md:mt-12 w-full max-w-md md:max-w-lg lg:max-w-xl aspect-[3/4] relative">
-        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover" />
+      <div className="mt-12 md:mt-16 w-full max-w-sm md:max-w-md lg:max-w-lg aspect-[3/4] relative overflow-hidden">
+        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
       </div>
     </main>
   )
