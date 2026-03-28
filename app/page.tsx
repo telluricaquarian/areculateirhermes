@@ -1,11 +1,12 @@
 import { ArrowRight } from "lucide-react"
+import Image from "next/image"
 
 export default function HeroPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#1a1a1a] to-[#0d0d0d] flex flex-col items-center">
-      {/* Logo Placeholder */}
+      {/* Logo */}
       <div className="mt-8 md:mt-12 w-12 h-12 rounded-lg border border-[#3a3a3a] bg-[#1c1c1c] flex items-center justify-center">
-        <span className="text-[#888] text-xs font-medium">LOGO</span>
+        <Image src="/aa.png" alt="Logo" width={32} height={32} className="object-contain" />
       </div>
 
       {/* Announcement Pill */}
@@ -31,9 +32,9 @@ export default function HeroPage() {
         *Results may vary. Custom setup required.
       </p>
 
-      {/* Hero Image Placeholder */}
-      <div className="mt-8 md:mt-12 w-full max-w-md md:max-w-lg lg:max-w-xl aspect-[3/4] flex items-center justify-center">
-        <span className="text-[#444] text-sm">HERO IMAGE</span>
+      {/* Hero Image */}
+      <div className="mt-8 md:mt-12 w-full max-w-md md:max-w-lg lg:max-w-xl aspect-[3/4] relative">
+        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover" />
       </div>
     </main>
   )
