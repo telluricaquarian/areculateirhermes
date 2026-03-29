@@ -59,8 +59,13 @@ export default function HeroPage() {
         />
       </div>
 
-      {/* ── Foreground content — sits above atmospheric layer ── */}
-      <div className="relative z-10 flex flex-col items-center w-full">
+      {/* ── Spartan hero — z-10, above atmosphere, below content ── */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 pointer-events-none w-[260px] h-[380px] md:w-[400px] md:h-[540px] lg:w-[480px] lg:h-[640px]">
+        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
+      </div>
+
+      {/* ── Foreground content — z-20, above Spartan and atmosphere ── */}
+      <div className="relative z-20 flex flex-col items-center w-full">
 
       {/* Logo */}
       <div className="mt-5 md:mt-12">
@@ -89,14 +94,6 @@ export default function HeroPage() {
       <p className="mt-2 md:mt-4 text-[#666] text-xs text-center">
         *Results may vary. Custom setup required.
       </p>
-
-      {/* Hero Image */}
-      {/* Mobile: absolute bottom-0 so it contributes no scroll height; main's overflow-hidden clips the bottom edge */}
-      {/* Desktop: back in normal flow with original sizing */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[260px] h-[360px] overflow-hidden md:static md:translate-x-0 md:mt-16 md:w-full md:max-w-md lg:max-w-lg md:h-auto md:aspect-[3/4]">
-
-        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
-      </div>
 
       </div>{/* end foreground content */}
 
