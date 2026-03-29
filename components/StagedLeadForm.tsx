@@ -255,7 +255,7 @@ export default function StagedLeadForm() {
       {/* ── Microcopy ── */}
       {phase !== 'complete' && (
         <p className="mt-3 text-[#e86c2c]/80 text-[10px] text-center tracking-wide">
-          We save your progress as you go.
+          Your details are saved to a waitlist. We save your progress as you go.
         </p>
       )}
     </div>
