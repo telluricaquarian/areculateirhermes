@@ -10,7 +10,7 @@ export default function HeroPage() {
     <main className="relative h-[100svh] md:h-auto md:min-h-screen bg-gradient-to-b from-[#242424] to-[#111111] flex flex-col items-center overflow-hidden">
 
       {/* ── Atmospheric Background ── */}
-      <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden="true">
+      <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
 
         {/* Stars — animate-ui StarsBackground */}
         <StarsBackground
@@ -59,6 +59,9 @@ export default function HeroPage() {
         />
       </div>
 
+      {/* ── Foreground content — sits above atmospheric layer ── */}
+      <div className="relative z-10 flex flex-col items-center w-full">
+
       {/* Logo */}
       <div className="mt-5 md:mt-12">
         <Image src="/neworange.png" alt="Areculateir logo" width={36} height={36} className="object-contain md:w-10 md:h-10" />
@@ -94,6 +97,8 @@ export default function HeroPage() {
 
         <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
       </div>
+
+      </div>{/* end foreground content */}
 
       {/* Auto-opening screening modal */}
       <ScreeningModal />
