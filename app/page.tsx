@@ -141,6 +141,17 @@ export default function HeroPage() {
 
       {/* Footer Attribution */}
       <footer className="fixed bottom-0 inset-x-0 flex flex-col items-center pb-5 pt-10 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+        <p className="mb-2 text-[#ccc]/75 text-xs tracking-wide pointer-events-auto">
+          Creative Direction by{" "}
+          <a
+            href="https://www.instagram.com/thethinkingspirit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#d4b96a] hover:text-[#e8cc7a] hover:underline transition-colors cursor-pointer"
+          >
+            @thethinkingspirit
+          </a>
+        </p>
         <p className="text-[#888] text-xs tracking-wide pointer-events-auto">
           Brought to you by{" "}
           <a
