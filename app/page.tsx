@@ -101,7 +101,7 @@ export default function HeroPage() {
       <ScreeningModal />
 
       {/* Footer Attribution */}
-      <footer className="fixed bottom-0 inset-x-0 flex flex-col items-center pb-5 pt-10 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+      <footer className="fixed bottom-0 inset-x-0 z-30 flex flex-col items-center pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-10 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
         <div className="mb-2 pointer-events-auto">
           <ComplianceModal />
         </div>
