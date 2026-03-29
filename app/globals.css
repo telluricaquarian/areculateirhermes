@@ -123,3 +123,28 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Atmospheric orb drift animations */
+@keyframes orb-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(28px, -18px) scale(1.04); }
+  66%       { transform: translate(-18px, 14px) scale(0.97); }
+}
+@keyframes orb-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-22px, 26px) scale(1.03); }
+  75%       { transform: translate(18px, -14px) scale(0.98); }
+}
+@keyframes orb-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  30%       { transform: translate(22px, -22px) scale(1.04); }
+  70%       { transform: translate(-28px, 8px) scale(1.03); }
+}
+
+.orb-drift-1 { animation: orb-drift-1 25s ease-in-out infinite; }
+.orb-drift-2 { animation: orb-drift-2 32s ease-in-out infinite; }
+.orb-drift-3 { animation: orb-drift-3 28s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .orb-drift-1, .orb-drift-2, .orb-drift-3 { animation: none; }
+}
