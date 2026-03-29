@@ -122,12 +122,12 @@ export default function HeroPage() {
       </div>
 
       {/* Logo */}
-      <div className="mt-8 md:mt-12">
-        <Image src="/neworange.png" alt="Areculateir logo" width={40} height={40} className="object-contain" />
+      <div className="mt-5 md:mt-12">
+        <Image src="/neworange.png" alt="Areculateir logo" width={36} height={36} className="object-contain md:w-10 md:h-10" />
       </div>
 
       {/* Announcement Pill */}
-      <div className="mt-6 md:mt-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#FF7900]/60 bg-gradient-to-r from-black via-neutral-900 to-black shadow-[0_0_20px_rgba(255,121,0,0.25)]">
+      <div className="mt-3 md:mt-8 inline-flex items-center gap-2 px-4 py-1.5 md:py-2 rounded-full border border-[#FF7900]/60 bg-gradient-to-r from-black via-neutral-900 to-black shadow-[0_0_20px_rgba(255,121,0,0.25)]">
         <ArrowRight className="w-4 h-4 text-[#e86c2c]" />
         <span className="text-[#e86c2c] text-sm">
           {"Let's set up your first autonomous employee"}
@@ -135,22 +135,22 @@ export default function HeroPage() {
       </div>
 
       {/* Headline */}
-      <h1 className="mt-6 md:mt-8 text-white text-base sm:text-xl md:text-2xl font-semibold text-center tracking-[-0.04em] px-6 sm:whitespace-nowrap">
+      <h1 className="mt-3 md:mt-8 text-white text-base sm:text-xl md:text-2xl font-semibold text-center tracking-[-0.04em] px-6 sm:whitespace-nowrap">
         Your own AI agent. 92 skills. Running 24/7.
       </h1>
 
       {/* Staged Lead Capture */}
-      <div className="mt-6 md:mt-8 w-full flex justify-center px-6">
+      <div className="mt-3 md:mt-8 w-full flex justify-center px-6">
         <StagedLeadForm />
       </div>
 
       {/* Disclaimer */}
-      <p className="mt-4 text-[#666] text-xs text-center">
+      <p className="mt-2 md:mt-4 text-[#666] text-xs text-center">
         *Results may vary. Custom setup required.
       </p>
 
       {/* Hero Image */}
-      <div className="mt-12 md:mt-16 w-full max-w-[260px] md:max-w-md lg:max-w-lg aspect-[4/5] md:aspect-[3/4] relative overflow-hidden">
+      <div className="mt-6 md:mt-16 w-full max-w-[260px] md:max-w-md lg:max-w-lg aspect-[4/5] md:aspect-[3/4] relative overflow-hidden">
 
         <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
       </div>
