@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import LiquidMetalInput from '@/components/ui/LiquidMetalInput'
+import { getEmailValidationStatus } from '@/lib/emailValidation'
 
 // ---------------------------------------------------------------------------
 // Step definitions
@@ -42,17 +43,19 @@ async function submitToSheets(data: FormData) {
   const url = process.env.NEXT_PUBLIC_HERMES_SHEET_WEBHOOK_URL
   if (!url) return
   try {
+    const { status: emailStatus } = getEmailValidationStatus(data.email)
     await fetch(url, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email:       data.email,
-        name:        data.name,
-        socialMedia: data.social,
-        website:     data.website,
-        submittedAt: new Date().toISOString(),
-        source:      'areculateirhermes',
+        email:           data.email,
+        name:            data.name,
+        socialMedia:     data.social,
+        website:         data.website,
+        emailValidation: emailStatus,
+        submittedAt:     new Date().toISOString(),
+        source:          'areculateirhermes',
       }),
     })
   } catch {
@@ -81,9 +84,16 @@ export default function StagedLeadForm() {
   const isLast  = step === STEPS.length - 1
 
   // ── Validation ────────────────────────────────────────────────────────────
-  function validate() {
-    if (current.key === 'email')   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
-    if (current.key === 'website') return true                  // optional
+  function validate(): boolean {
+    if (current.key === 'email') {
+      const result = getEmailValidationStatus(value)
+      if (result.status !== 'valid') {
+        setError(result.message ?? 'Please enter a valid email address.')
+        return false
+      }
+      return true
+    }
+    if (current.key === 'website') return true   // optional
     return value.trim().length > 0
   }
 
@@ -101,7 +111,8 @@ export default function StagedLeadForm() {
   async function handleContinue() {
     if (busy || phase !== null) return
     if (!validate()) {
-      setError(current.key === 'email' ? 'Please enter a valid email.' : 'This field is required.')
+      // error already set inside validate() for email; set generic message for other fields
+      if (current.key !== 'email') setError('This field is required.')
       return
     }
 
