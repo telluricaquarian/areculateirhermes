@@ -36,6 +36,24 @@ export default function HeroPage() {
       <div className="mt-12 md:mt-16 w-full max-w-sm md:max-w-md lg:max-w-lg aspect-[3/4] relative overflow-hidden">
         <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
       </div>
+
+      {/* Footer Attribution */}
+      <footer className="fixed bottom-0 inset-x-0 flex flex-col items-center pb-5 pt-10 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+        <p className="text-[#888] text-xs tracking-wide pointer-events-auto">
+          Brought to you by{" "}
+          <a
+            href="https://areculateir.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#e86c2c] hover:text-[#FF7900] transition-colors"
+          >
+            Areculateir.com
+          </a>
+        </p>
+        <p className="mt-1 text-[#444] text-[10px] tracking-widest pointer-events-auto">
+          ©2026
+        </p>
+      </footer>
     </main>
   )
 }
