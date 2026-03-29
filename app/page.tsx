@@ -150,6 +150,26 @@ export default function HeroPage() {
 
       {/* Hero Image */}
       <div className="mt-12 md:mt-16 w-full max-w-sm md:max-w-md lg:max-w-lg aspect-[3/4] relative overflow-hidden">
+
+        {/* Mobile-only video background — hidden on md+ */}
+        <video
+          className="md:hidden absolute inset-0 w-full h-full object-cover object-center opacity-30"
+          src="/marquee.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          style={{ pointerEvents: "none" }}
+        />
+        {/* Darkening overlay above video, below Spartan — mobile only */}
+        <div
+          className="md:hidden absolute inset-0 bg-black/40"
+          aria-hidden="true"
+          style={{ pointerEvents: "none" }}
+        />
+
         <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
       </div>
 
