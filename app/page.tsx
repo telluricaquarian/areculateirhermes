@@ -102,11 +102,6 @@ export default function HeroPage() {
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[600px]"
           style={{ background: "radial-gradient(ellipse 50% 50% at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 100%)" }}
         />
-        {/* Spartan silhouette glow — ambient light behind the figure */}
-        <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[700px]"
-          style={{ background: "radial-gradient(ellipse 40% 50% at 50% 65%, rgba(140,90,20,0.28) 0%, transparent 100%)", filter: "blur(50px)" }}
-        />
       </div>
 
       {/* Logo */}
@@ -141,7 +136,7 @@ export default function HeroPage() {
 
       {/* Hero Image */}
       <div className="mt-12 md:mt-16 w-full max-w-sm md:max-w-md lg:max-w-lg aspect-[3/4] relative overflow-hidden">
-        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" style={{ filter: "brightness(1.18) contrast(1.06) drop-shadow(0 0 28px rgba(180,120,40,0.28))" }} />
+        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
       </div>
 
       {/* Footer Attribution */}
