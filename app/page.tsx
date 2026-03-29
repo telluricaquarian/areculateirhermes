@@ -5,7 +5,7 @@ import StagedLeadForm from "@/components/StagedLeadForm"
 
 export default function HeroPage() {
   return (
-    <main className="relative min-h-screen bg-gradient-to-b from-[#242424] to-[#111111] flex flex-col items-center overflow-hidden">
+    <main className="relative h-[100svh] md:h-auto md:min-h-screen bg-gradient-to-b from-[#242424] to-[#111111] flex flex-col items-center overflow-hidden">
 
       {/* ── Atmospheric Background ── */}
       <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden="true">
