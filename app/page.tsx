@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export default function HeroPage() {
   return (
-    <main className="relative min-h-screen bg-gradient-to-b from-[#1a1a1a] to-[#0d0d0d] flex flex-col items-center overflow-hidden">
+    <main className="relative min-h-screen bg-gradient-to-b from-[#242424] to-[#111111] flex flex-col items-center overflow-hidden">
 
       {/* ── Atmospheric Background ── */}
       <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden="true">
@@ -84,17 +84,27 @@ export default function HeroPage() {
         {/* Orb 1 — warm orange, top-right */}
         <div
           className="orb-drift-1 absolute -top-24 -right-24 w-[480px] h-[480px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(255,100,0,0.18) 0%, transparent 70%)", filter: "blur(80px)" }}
+          style={{ background: "radial-gradient(circle, rgba(255,100,0,0.28) 0%, transparent 70%)", filter: "blur(80px)" }}
         />
         {/* Orb 2 — soft warm white, left-mid */}
         <div
           className="orb-drift-2 absolute top-[30%] -left-28 w-[380px] h-[380px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(255,230,200,0.09) 0%, transparent 70%)", filter: "blur(90px)" }}
+          style={{ background: "radial-gradient(circle, rgba(255,230,200,0.15) 0%, transparent 70%)", filter: "blur(90px)" }}
         />
         {/* Orb 3 — subtle amber, bottom */}
         <div
           className="orb-drift-3 absolute -bottom-16 left-[15%] w-[560px] h-[240px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(180,65,0,0.14) 0%, transparent 70%)", filter: "blur(70px)" }}
+          style={{ background: "radial-gradient(circle, rgba(180,65,0,0.22) 0%, transparent 70%)", filter: "blur(70px)" }}
+        />
+        {/* Center radial lift — brightens the middle viewing area */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[600px]"
+          style={{ background: "radial-gradient(ellipse 50% 50% at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 100%)" }}
+        />
+        {/* Spartan silhouette glow — ambient light behind the figure */}
+        <div
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[700px]"
+          style={{ background: "radial-gradient(ellipse 40% 50% at 50% 65%, rgba(140,90,20,0.28) 0%, transparent 100%)", filter: "blur(50px)" }}
         />
       </div>
 
@@ -128,7 +138,7 @@ export default function HeroPage() {
 
       {/* Hero Image */}
       <div className="mt-12 md:mt-16 w-full max-w-sm md:max-w-md lg:max-w-lg aspect-[3/4] relative overflow-hidden">
-        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
+        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" style={{ filter: "brightness(1.18) contrast(1.06) drop-shadow(0 0 28px rgba(180,120,40,0.28))" }} />
       </div>
 
       {/* Footer Attribution */}
