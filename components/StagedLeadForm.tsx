@@ -32,6 +32,33 @@ async function saveLead(payload: Partial<FormData> & { completedStep: number }) 
   }
 }
 
+// ---------------------------------------------------------------------------
+// Google Sheets webhook — fires on final step completion.
+// Uses no-cors because Google Apps Script webhooks don't return CORS headers.
+// Opaque response is expected; errors are silenced to avoid blocking UX.
+// ---------------------------------------------------------------------------
+async function submitToSheets(data: FormData) {
+  const url = process.env.NEXT_PUBLIC_HERMES_SHEET_WEBHOOK_URL
+  if (!url) return
+  try {
+    await fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email:       data.email,
+        name:        data.name,
+        socialMedia: data.social,
+        website:     data.website,
+        submittedAt: new Date().toISOString(),
+        source:      'areculateirhermes',
+      }),
+    })
+  } catch {
+    // Intentionally silenced — webhook submission is best-effort
+  }
+}
+
 const pause = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
 
 type SpecialPhase = 'email-confirmed' | 'complete' | null
@@ -87,6 +114,7 @@ export default function StagedLeadForm() {
     await saveLead({ ...updated, completedStep: step + 1 })
 
     if (isLast) {
+      await submitToSheets(updated)
       await transition(() => setPhase('complete'))
       setBusy(false)
       return
