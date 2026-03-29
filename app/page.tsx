@@ -6,7 +6,7 @@ export default function HeroPage() {
     <main className="min-h-screen bg-gradient-to-b from-[#1a1a1a] to-[#0d0d0d] flex flex-col items-center">
       {/* Logo */}
       <div className="mt-8 md:mt-12">
-        <Image src="/aa.png" alt="Logo" width={48} height={48} className="object-contain" />
+        <Image src="/aa.png" alt="Logo" width={36} height={36} className="object-contain" />
       </div>
 
       {/* Announcement Pill */}
