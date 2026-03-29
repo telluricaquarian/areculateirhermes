@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
+import ComplianceModal from "@/components/ComplianceModal"
 
 export default function HeroPage() {
   return (
@@ -130,6 +131,8 @@ export default function HeroPage() {
       <button className="mt-6 md:mt-8 px-6 py-2.5 rounded-full border border-[#c85a20] bg-transparent text-[#e86c2c] text-sm font-medium tracking-wide hover:bg-[#c85a20]/10 transition-colors">
         JOIN WAITLIST
       </button>
+
+      <ComplianceModal />
 
       {/* Disclaimer */}
       <p className="mt-4 text-[#666] text-xs text-center">
