@@ -150,7 +150,9 @@ export default function HeroPage() {
       </p>
 
       {/* Hero Image */}
-      <div className="mt-6 md:mt-16 w-full max-w-[260px] md:max-w-md lg:max-w-lg aspect-[4/5] md:aspect-[3/4] relative overflow-hidden">
+      {/* Mobile: absolute bottom-0 so it contributes no scroll height; main's overflow-hidden clips the bottom edge */}
+      {/* Desktop: back in normal flow with original sizing */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[260px] h-[360px] overflow-hidden md:static md:translate-x-0 md:mt-16 md:w-full md:max-w-md lg:max-w-lg md:h-auto md:aspect-[3/4]">
 
         <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
       </div>
