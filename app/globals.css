@@ -148,3 +148,57 @@
 @media (prefers-reduced-motion: reduce) {
   .orb-drift-1, .orb-drift-2, .orb-drift-3 { animation: none; }
 }
+
+/* ── Liquid Metal Input ───────────────────────────────────────────── */
+
+/* Spinning conic-gradient that forms the metallic border rim */
+@keyframes liquid-metal-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Soft shimmer streak that travels across the field surface */
+@keyframes liquid-metal-shimmer {
+  0%   { transform: translateX(-80%);  opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { transform: translateX(280%); opacity: 0; }
+}
+
+.liquid-metal-spin {
+  animation: liquid-metal-rotate 10s linear infinite;
+  will-change: transform;
+}
+
+.liquid-metal-shimmer {
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 35%,
+    rgba(255, 220, 170, 0.07) 50%,
+    rgba(255, 255, 255, 0.03) 65%,
+    transparent 100%
+  );
+  animation: liquid-metal-shimmer 7s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+/* Elevated focus state — orange outer pulse ring */
+.liquid-metal-capsule:focus-within {
+  box-shadow: 0 0 0 1px rgba(232, 108, 44, 0.25),
+              0 0 12px rgba(232, 108, 44, 0.12);
+}
+
+.liquid-metal-capsule:focus-within .liquid-metal-spin {
+  animation-duration: 5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-metal-spin    { animation: none; }
+  .liquid-metal-shimmer { animation: none; }
+}

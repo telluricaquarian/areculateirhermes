@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import LiquidMetalInput from '@/components/ui/LiquidMetalInput'
 
 // ---------------------------------------------------------------------------
 // Step definitions
@@ -202,7 +203,7 @@ export default function StagedLeadForm() {
 
         ) : (
           <div className="flex flex-col gap-2.5">
-            <input
+            <LiquidMetalInput
               ref={inputRef}
               type={current.type}
               value={value}
@@ -212,7 +213,6 @@ export default function StagedLeadForm() {
               aria-label={current.placeholder}
               autoComplete={current.autocomplete}
               autoFocus={step === 0}
-              className="w-full px-5 py-2.5 rounded-full bg-black/60 border border-[#c85a20]/40 text-white text-sm placeholder:text-[#555] focus:outline-none focus:border-[#FF7900]/70 focus:ring-1 focus:ring-[#FF7900]/20 transition-all"
             />
             <button
               onClick={handleContinue}
