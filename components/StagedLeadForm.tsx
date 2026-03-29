@@ -113,8 +113,11 @@ export default function StagedLeadForm() {
     // Save partial lead immediately on every step
     await saveLead({ ...updated, completedStep: step + 1 })
 
+    // Send to Google Sheets on every step — captures email immediately,
+    // then updates the row with richer data as the user progresses.
+    submitToSheets(updated)
+
     if (isLast) {
-      await submitToSheets(updated)
       await transition(() => setPhase('complete'))
       setBusy(false)
       return
