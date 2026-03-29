@@ -18,7 +18,7 @@ export default function HeroPage() {
       </div>
 
       {/* Headline */}
-      <h1 className="mt-6 md:mt-8 text-white text-xl md:text-2xl font-medium text-center px-4 text-balance">
+      <h1 className="mt-6 md:mt-8 text-white text-xl md:text-2xl font-semibold text-center whitespace-nowrap tracking-[-0.04em]">
         Your own AI agent. 92 skills. Running 24/7.
       </h1>
 
