@@ -5,6 +5,7 @@ import StagedLeadForm from "@/components/StagedLeadForm"
 import ScreeningModal from "@/components/ScreeningModal"
 import { StarsBackground } from "@/components/animate-ui/components/backgrounds/stars"
 import { EncryptedText } from "@/components/ui/encrypted-text"
+import SpeakWithAgentButton from "@/components/SpeakWithAgentButton"
 
 export default function HeroPage() {
   return (
@@ -109,6 +110,9 @@ export default function HeroPage() {
 
       {/* Footer Attribution */}
       <footer className="fixed bottom-0 inset-x-0 z-30 flex flex-col items-center pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-10 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+        <div className="mb-3 pointer-events-auto">
+          <SpeakWithAgentButton />
+        </div>
         <div className="mb-2 pointer-events-auto">
           <ComplianceModal />
         </div>
