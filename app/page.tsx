@@ -14,7 +14,7 @@ export default function HeroPage() {
 
         {/* Stars — animate-ui StarsBackground */}
         <StarsBackground
-          starColor="rgba(255,255,255,0.7)"
+          starColor="rgba(255,255,255,0.92)"
           speed={60}
           factor={0.04}
           className="absolute inset-0"
@@ -55,7 +55,7 @@ export default function HeroPage() {
         {/* Vignette — dark radial fade toward edges */}
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.42) 100%)" }}
+          style={{ background: "radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.22) 100%)" }}
         />
       </div>
 
