@@ -10,11 +10,6 @@ export const metadata: Metadata = {
   title: 'v0 App',
   description: 'Created with v0',
   generator: 'v0.app',
-  icons: {
-    icon: '/favicon.png',
-    shortcut: '/favicon.png',
-    apple: '/favicon.png',
-  },
 }
 
 export default function RootLayout({
