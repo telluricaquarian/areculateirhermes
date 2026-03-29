@@ -4,7 +4,7 @@ import ComplianceModal from "@/components/ComplianceModal"
 
 export default function HeroPage() {
   return (
-    <main className="relative min-h-screen flex flex-col items-center overflow-hidden" style={{ background: "linear-gradient(to bottom, #1a1a1a 0%, #0f0f0f 35%, #050505 65%, #000000 100%)" }}>
+    <main className="relative min-h-screen bg-gradient-to-b from-[#242424] to-[#111111] flex flex-col items-center overflow-hidden">
 
       {/* ── Atmospheric Background ── */}
       <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden="true">
@@ -150,34 +150,6 @@ export default function HeroPage() {
 
       {/* Hero Image */}
       <div className="mt-12 md:mt-16 w-full max-w-sm md:max-w-md lg:max-w-lg aspect-[3/4] relative overflow-hidden">
-
-        {/* Mobile-only video background — hidden on md+ */}
-        <video
-          className="md:hidden absolute inset-0 w-full h-full object-cover object-center opacity-30"
-          src="/marquee.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          style={{ pointerEvents: "none" }}
-        />
-        {/* Top-to-bottom blend overlay — blends page bg into video top edge, mobile only */}
-        <div
-          className="md:hidden absolute inset-0 z-10"
-          aria-hidden="true"
-          style={{
-            background: "linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.85) 75%, rgba(0,0,0,1.0) 100%)",
-            pointerEvents: "none",
-          }}
-        />
-        {/* Darkening overlay above video, below Spartan — mobile only */}
-        <div
-          className="md:hidden absolute inset-0 bg-black/40"
-          aria-hidden="true"
-          style={{ pointerEvents: "none" }}
-        />
 
         <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
       </div>
