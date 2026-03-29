@@ -122,7 +122,7 @@ export default function HeroPage() {
 
       {/* Logo */}
       <div className="mt-8 md:mt-12">
-        <Image src="/aa.png" alt="Logo" width={36} height={36} className="object-contain" />
+        <Image src="/neworange.png" alt="Areculateir logo" width={40} height={40} className="object-contain" />
       </div>
 
       {/* Announcement Pill */}
