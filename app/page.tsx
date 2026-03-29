@@ -143,8 +143,6 @@ export default function HeroPage() {
         JOIN WAITLIST
       </button>
 
-      <ComplianceModal />
-
       {/* Disclaimer */}
       <p className="mt-4 text-[#666] text-xs text-center">
         *Results may vary. Custom setup required.
@@ -157,6 +155,9 @@ export default function HeroPage() {
 
       {/* Footer Attribution */}
       <footer className="fixed bottom-0 inset-x-0 flex flex-col items-center pb-5 pt-10 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+        <div className="mb-2 pointer-events-auto">
+          <ComplianceModal />
+        </div>
         <p className="text-[#888] text-xs tracking-wide pointer-events-auto">
           Brought to you by{" "}
           <a
