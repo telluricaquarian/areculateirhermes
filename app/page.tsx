@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react"
 import Image from "next/image"
 import ComplianceModal from "@/components/ComplianceModal"
 import StagedLeadForm from "@/components/StagedLeadForm"
+import ScreeningModal from "@/components/ScreeningModal"
 
 export default function HeroPage() {
   return (
@@ -156,6 +157,9 @@ export default function HeroPage() {
 
         <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
       </div>
+
+      {/* Auto-opening screening modal */}
+      <ScreeningModal />
 
       {/* Footer Attribution */}
       <footer className="fixed bottom-0 inset-x-0 flex flex-col items-center pb-5 pt-10 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
