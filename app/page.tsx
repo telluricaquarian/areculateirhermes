@@ -161,10 +161,10 @@ export default function HeroPage() {
         <p className="text-[#888] text-xs tracking-wide pointer-events-auto">
           Brought to you by{" "}
           <a
-            href="https://areculateir.com"
+            href="https://www.areculateir.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#e86c2c] hover:text-[#FF7900] transition-colors"
+            className="text-[#e86c2c] hover:text-[#FF7900] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#FF7900]/60 rounded-sm"
           >
             Areculateir.com
           </a>
