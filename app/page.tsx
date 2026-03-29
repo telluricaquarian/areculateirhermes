@@ -5,7 +5,7 @@ import StagedLeadForm from "@/components/StagedLeadForm"
 
 export default function HeroPage() {
   return (
-    <main className="relative min-h-screen bg-gradient-to-b from-[#242424] to-[#111111] flex flex-col items-center overflow-hidden">
+    <main className="relative bg-gradient-to-b from-[#242424] to-[#111111] flex flex-col items-center overflow-hidden">
 
       {/* ── Atmospheric Background ── */}
       <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden="true">
@@ -121,38 +121,80 @@ export default function HeroPage() {
         />
       </div>
 
-      {/* Logo */}
-      <div className="mt-8 md:mt-12">
-        <Image src="/neworange.png" alt="Areculateir logo" width={40} height={40} className="object-contain" />
-      </div>
+      {/* ── Mobile layout — locked to 100svh ── */}
+      <section className="md:hidden relative w-full h-[100svh] flex flex-col items-center pt-6 px-5 overflow-hidden">
 
-      {/* Announcement Pill */}
-      <div className="mt-6 md:mt-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#FF7900]/60 bg-gradient-to-r from-black via-neutral-900 to-black shadow-[0_0_20px_rgba(255,121,0,0.25)]">
-        <ArrowRight className="w-4 h-4 text-[#e86c2c]" />
-        <span className="text-[#e86c2c] text-sm">
-          {"Let's set up your first autonomous employee"}
-        </span>
-      </div>
+        {/* Logo */}
+        <Image src="/neworange.png" alt="Areculateir logo" width={40} height={40} className="object-contain mb-2" />
 
-      {/* Headline */}
-      <h1 className="mt-6 md:mt-8 text-white text-base sm:text-xl md:text-2xl font-semibold text-center tracking-[-0.04em] px-6 sm:whitespace-nowrap">
-        Your own AI agent. 92 skills. Running 24/7.
-      </h1>
+        {/* Content stack */}
+        <div className="flex flex-col items-center text-center gap-4 w-full">
 
-      {/* Staged Lead Capture */}
-      <div className="mt-6 md:mt-8 w-full flex justify-center px-6">
-        <StagedLeadForm />
-      </div>
+          {/* Announcement Pill */}
+          <div className="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-[#FF7900]/60 bg-gradient-to-r from-black via-neutral-900 to-black shadow-[0_0_20px_rgba(255,121,0,0.25)]">
+            <ArrowRight className="w-4 h-4 text-[#e86c2c]" />
+            <span className="text-[#e86c2c] text-sm">{"Let's set up your first autonomous employee"}</span>
+          </div>
 
-      {/* Disclaimer */}
-      <p className="mt-4 text-[#666] text-xs text-center">
-        *Results may vary. Custom setup required.
-      </p>
+          {/* Headline */}
+          <h1 className="text-[18px] leading-snug tracking-tight font-semibold text-white max-w-[320px]">
+            Your own AI agent. 92 skills. Running 24/7.
+          </h1>
 
-      {/* Hero Image */}
-      <div className="mt-12 md:mt-16 w-full max-w-[260px] md:max-w-md lg:max-w-lg aspect-[4/5] md:aspect-[3/4] relative overflow-hidden">
+          {/* Staged Lead Capture */}
+          <div className="w-full flex justify-center">
+            <StagedLeadForm />
+          </div>
 
-        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
+          {/* Disclaimer */}
+          <p className="text-[11px] leading-tight text-[#999] opacity-40">
+            *Results may vary. Custom setup required.
+          </p>
+        </div>
+
+        {/* Spartan — anchored to bottom of viewport */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[85%] max-w-[320px]">
+          {/* Gradient fade above image */}
+          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-transparent to-black/60 z-10 pointer-events-none" />
+          <div className="relative w-full aspect-[3/4]">
+            <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top opacity-90" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Desktop layout — unchanged ── */}
+      <div className="hidden md:flex flex-col items-center w-full">
+
+        {/* Logo */}
+        <div className="mt-12">
+          <Image src="/neworange.png" alt="Areculateir logo" width={40} height={40} className="object-contain" />
+        </div>
+
+        {/* Announcement Pill */}
+        <div className="mt-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#FF7900]/60 bg-gradient-to-r from-black via-neutral-900 to-black shadow-[0_0_20px_rgba(255,121,0,0.25)]">
+          <ArrowRight className="w-4 h-4 text-[#e86c2c]" />
+          <span className="text-[#e86c2c] text-sm">{"Let's set up your first autonomous employee"}</span>
+        </div>
+
+        {/* Headline */}
+        <h1 className="mt-8 text-white text-xl md:text-2xl font-semibold text-center tracking-[-0.04em] px-6 whitespace-nowrap">
+          Your own AI agent. 92 skills. Running 24/7.
+        </h1>
+
+        {/* Staged Lead Capture */}
+        <div className="mt-8 w-full flex justify-center px-6">
+          <StagedLeadForm />
+        </div>
+
+        {/* Disclaimer */}
+        <p className="mt-4 text-[#666] text-xs text-center">
+          *Results may vary. Custom setup required.
+        </p>
+
+        {/* Hero Image */}
+        <div className="mt-16 w-full max-w-md lg:max-w-lg aspect-[3/4] relative overflow-hidden">
+          <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
+        </div>
       </div>
 
       {/* Footer Attribution */}
