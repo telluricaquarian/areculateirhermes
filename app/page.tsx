@@ -6,10 +6,16 @@ import ScreeningModal from "@/components/ScreeningModal"
 import { StarsBackground } from "@/components/animate-ui/components/backgrounds/stars"
 import { EncryptedText } from "@/components/ui/encrypted-text"
 import SpeakWithAgentButton from "@/components/SpeakWithAgentButton"
+import SydneyTime from "@/components/system/SydneyTime"
 
 export default function HeroPage() {
   return (
     <main className="relative h-[100svh] md:h-auto md:min-h-screen bg-gradient-to-b from-[#242424] to-[#111111] flex flex-col items-center overflow-hidden">
+
+      {/* Sydney time — desktop only, top-center */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 hidden md:block z-50">
+        <SydneyTime />
+      </div>
 
       {/* ── Atmospheric Background ── */}
       <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
