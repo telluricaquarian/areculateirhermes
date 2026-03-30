@@ -13,7 +13,7 @@ export default function HeroPage() {
     <main className="relative h-[100svh] md:h-auto md:min-h-screen bg-gradient-to-b from-[#242424] to-[#111111] flex flex-col items-center overflow-hidden">
 
       {/* Sydney time — desktop only, top-center */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 hidden md:block z-50">
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 hidden md:block z-50 pointer-events-none">
         <SydneyTime />
       </div>
 
