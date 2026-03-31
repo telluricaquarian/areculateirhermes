@@ -40,7 +40,7 @@ export default function SitePortfolioModal() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="inline-flex items-center gap-1.5 text-[#555] text-xs tracking-wide hover:text-[#e86c2c] transition-colors">
+        <button className="inline-flex items-center gap-1.5 text-[#555] text-[11px] md:text-xs tracking-wide hover:text-[#e86c2c] transition-colors">
           <LayoutGrid className="w-3 h-3" />
           View Site Portfolio
         </button>
