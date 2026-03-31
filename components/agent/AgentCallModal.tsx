@@ -31,9 +31,21 @@ export default function AgentCallModal({ open, onClose }: Props) {
   const inputRef  = useRef(0)
   const outputRef = useRef(0)
 
+  // ── Shared error recovery ────────────────────────────────────────────────
+  const handleConnectionError = useCallback((msg: string, err?: unknown) => {
+    console.error('[Vapi]', msg, err ?? '')
+    setIsConnecting(false)
+    setIsConnected(false)
+    setAgentState(null)
+    setStatusText(msg)
+    inputRef.current  = 0
+    outputRef.current = 0
+  }, [])
+
   // ── Vapi event listeners ─────────────────────────────────────────────────
   useEffect(() => {
     vapi.on('call-start', () => {
+      console.log('[Vapi] call-start')
       setIsConnecting(false)
       setIsConnected(true)
       setAgentState('listening')
@@ -41,12 +53,18 @@ export default function AgentCallModal({ open, onClose }: Props) {
     })
 
     vapi.on('call-end', () => {
+      console.log('[Vapi] call-end')
       setIsConnected(false)
       setIsConnecting(false)
       setAgentState(null)
       setStatusText('Call ended')
       inputRef.current  = 0
       outputRef.current = 0
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vapi.on('error', (err: any) => {
+      handleConnectionError('Unable to connect', err)
     })
 
     vapi.on('speech-start', () => {
@@ -70,8 +88,7 @@ export default function AgentCallModal({ open, onClose }: Props) {
     // Volume level events — drive Orb manual volumes
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vapi.on('volume-level', (vol: any) => {
-      // Vapi emits a single 0–1 number representing microphone input
-      inputRef.current = isMuted ? 0 : (vol as number)
+      inputRef.current = vol as number
     })
 
     // Drive output volume from agentState transitions instead of an
@@ -81,7 +98,7 @@ export default function AgentCallModal({ open, onClose }: Props) {
       vapi.removeAllListeners()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [handleConnectionError])
 
   // ── Drive Orb output volume from agentState ──────────────────────────────
   useEffect(() => {
@@ -113,11 +130,17 @@ export default function AgentCallModal({ open, onClose }: Props) {
 
   // ── Connect ───────────────────────────────────────────────────────────────
   const handleStartCall = useCallback(async () => {
+    console.log('[Vapi] attempting start…')
     setIsConnecting(true)
     setAgentState('thinking')
     setStatusText('Connecting…')
-    await vapi.start(process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID!)
-  }, [])
+    try {
+      await vapi.start(process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID!)
+      console.log('[Vapi] start() resolved')
+    } catch (err) {
+      handleConnectionError('Microphone or network error', err)
+    }
+  }, [handleConnectionError])
 
   // ── End call ──────────────────────────────────────────────────────────────
   const handleEndCall = useCallback(async () => {
