@@ -8,6 +8,7 @@ export default function SpeakWithAgentButton() {
 
   return (
     <>
+      <div className="inline-block rounded-full p-[1px] bg-gradient-to-r from-[#FF7900] via-[#FF9A3C] to-[#FF7900] transition-all duration-300 md:hover:scale-[1.02] md:hover:-translate-y-[1px] md:hover:shadow-[0_0_20px_rgba(255,121,0,0.25)]">
       <button
         onClick={() => setModalOpen(true)}
         className="
@@ -16,9 +17,8 @@ export default function SpeakWithAgentButton() {
           bg-white/90 hover:bg-white
           text-[#111] text-xs font-medium tracking-wide
           shadow-[0_2px_14px_rgba(0,0,0,0.35)]
-          hover:shadow-[0_3px_18px_rgba(0,0,0,0.45)]
           active:scale-[0.97]
-          transition-all duration-150
+          transition-all duration-300
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60
           select-none
         "
@@ -31,6 +31,7 @@ export default function SpeakWithAgentButton() {
         </span>
         Speak with an Agent
       </button>
+      </div>
 
       <AgentCallModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>
