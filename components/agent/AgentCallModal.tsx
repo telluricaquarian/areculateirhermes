@@ -3,43 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import * as RadixDialog from '@radix-ui/react-dialog'
 import { X, Mic, MicOff, PhoneOff } from 'lucide-react'
+import Vapi from '@vapi-ai/web'
 import { Orb, type AgentState } from '@/components/ui/orb'
 
 // ---------------------------------------------------------------------------
-// Call lifecycle types
+// Vapi singleton — created once per module load, not per render.
+// Requires NEXT_PUBLIC_VAPI_PUBLIC_KEY in .env.local
 // ---------------------------------------------------------------------------
-type CallStatus = 'idle' | 'connecting' | 'active' | 'ended'
-
-const STATUS_LABELS: Record<CallStatus, string> = {
-  idle:       'Ready',
-  connecting: 'Connecting…',
-  active:     'Connected',
-  ended:      'Call ended',
-}
-
-// ---------------------------------------------------------------------------
-// Simulated volume pulses while real Vapi audio analysis is not yet wired.
-// Replace these with real analyser values once Vapi is connected.
-// ---------------------------------------------------------------------------
-function useSimulatedVolumes(agentState: AgentState) {
-  const inputRef  = useRef(0)
-  const outputRef = useRef(0)
-
-  useEffect(() => {
-    if (agentState === 'listening') {
-      inputRef.current  = 0.6 + Math.random() * 0.35
-      outputRef.current = 0
-    } else if (agentState === 'talking') {
-      inputRef.current  = 0
-      outputRef.current = 0.55 + Math.random() * 0.4
-    } else {
-      inputRef.current  = 0
-      outputRef.current = 0
-    }
-  }, [agentState])
-
-  return { inputRef, outputRef }
-}
+const vapi = new Vapi(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY!)
 
 // ---------------------------------------------------------------------------
 // AgentCallModal
@@ -50,74 +21,115 @@ type Props = {
 }
 
 export default function AgentCallModal({ open, onClose }: Props) {
-  const [callStatus, setCallStatus]   = useState<CallStatus>('idle')
-  const [agentState, setAgentState]   = useState<AgentState>(null)
-  const [isMuted, setIsMuted]         = useState(false)
-  const demoTimerRef                  = useRef<ReturnType<typeof setInterval> | null>(null)
-  const connectTimerRef               = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [isConnecting, setIsConnecting] = useState(false)
+  const [isConnected, setIsConnected]   = useState(false)
+  const [agentState, setAgentState]     = useState<AgentState>(null)
+  const [statusText, setStatusText]     = useState('Ready')
+  const [isMuted, setIsMuted]           = useState(false)
 
-  const { inputRef, outputRef } = useSimulatedVolumes(agentState)
+  // Manual volume refs — updated by Vapi volume-level events
+  const inputRef  = useRef(0)
+  const outputRef = useRef(0)
 
-  // ── Reset when modal closes ────────────────────────────────────────────
+  // ── Vapi event listeners ─────────────────────────────────────────────────
   useEffect(() => {
-    if (!open) {
-      clearTimers()
-      setCallStatus('idle')
-      setAgentState(null)
-      setIsMuted(false)
-    }
-  }, [open])
-
-  function clearTimers() {
-    if (demoTimerRef.current)   clearInterval(demoTimerRef.current)
-    if (connectTimerRef.current) clearTimeout(connectTimerRef.current)
-  }
-
-  // ── Start call ────────────────────────────────────────────────────────
-  // TODO [VAPI]: replace body with vapi.start(assistantId) call.
-  // Hook into vapi events:
-  //   vapi.on('call-start', onCallStart)
-  //   vapi.on('speech-start', onSpeechStart)        → setAgentState('listening')
-  //   vapi.on('speech-end', onSpeechEnd)             → setAgentState('talking')
-  //   vapi.on('assistant-started-speaking', ...)     → setAgentState('talking')
-  //   vapi.on('assistant-stopped-speaking', ...)     → setAgentState('listening')
-  //   vapi.on('call-end', onCallEnd)                 → handleEndCall()
-  const handleStartCall = useCallback(() => {
-    setCallStatus('connecting')
-    setAgentState('thinking')
-
-    connectTimerRef.current = setTimeout(() => {
-      setCallStatus('active')
+    vapi.on('call-start', () => {
+      setIsConnecting(false)
+      setIsConnected(true)
       setAgentState('listening')
+      setStatusText('Listening')
+    })
 
-      // Demo alternation — remove once real Vapi events are wired
-      let toggle = false
-      demoTimerRef.current = setInterval(() => {
-        toggle = !toggle
-        setAgentState(toggle ? 'talking' : 'listening')
-      }, 2800)
-    }, 1800)
+    vapi.on('call-end', () => {
+      setIsConnected(false)
+      setIsConnecting(false)
+      setAgentState(null)
+      setStatusText('Call ended')
+      inputRef.current  = 0
+      outputRef.current = 0
+    })
+
+    vapi.on('speech-start', () => {
+      setAgentState('listening')
+      setStatusText('Listening')
+    })
+
+    vapi.on('speech-end', () => {
+      setAgentState('thinking')
+      setStatusText('Processing…')
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vapi.on('message', (msg: any) => {
+      if (msg?.type === 'assistant') {
+        setAgentState('talking')
+        setStatusText('Responding')
+      }
+    })
+
+    // Volume level events — drive Orb manual volumes
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vapi.on('volume-level', (vol: any) => {
+      // Vapi emits a single 0–1 number representing microphone input
+      inputRef.current = isMuted ? 0 : (vol as number)
+    })
+
+    // Drive output volume from agentState transitions instead of an
+    // audio-output event (not a valid VapiEventNames entry).
+
+    return () => {
+      vapi.removeAllListeners()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // ── End call ──────────────────────────────────────────────────────────
-  // TODO [VAPI]: call vapi.stop() here, then rely on 'call-end' event.
-  const handleEndCall = useCallback(() => {
-    clearTimers()
-    setCallStatus('ended')
-    setAgentState(null)
+  // ── Drive Orb output volume from agentState ──────────────────────────────
+  useEffect(() => {
+    outputRef.current = agentState === 'talking' ? 0.7 : 0
+  }, [agentState])
 
-    setTimeout(() => {
-      onClose()
-    }, 1200)
-  }, [onClose])
+  // ── Mute sync ─────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (isConnected) {
+      vapi.setMuted(isMuted)
+      if (isMuted) inputRef.current = 0
+    }
+  }, [isMuted, isConnected])
 
-  const isActive    = callStatus === 'active'
-  const isConnecting = callStatus === 'connecting'
-  const canStart    = callStatus === 'idle' || callStatus === 'ended'
+  // ── Reset when modal closes ───────────────────────────────────────────────
+  useEffect(() => {
+    if (!open) {
+      if (isConnected || isConnecting) vapi.stop()
+      setIsConnecting(false)
+      setIsConnected(false)
+      setAgentState(null)
+      setStatusText('Ready')
+      setIsMuted(false)
+      inputRef.current  = 0
+      outputRef.current = 0
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open])
 
-  // Prevent backdrop-close while call is active
+  // ── Connect ───────────────────────────────────────────────────────────────
+  const handleStartCall = useCallback(async () => {
+    setIsConnecting(true)
+    setAgentState('thinking')
+    setStatusText('Connecting…')
+    await vapi.start(process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID!)
+  }, [])
+
+  // ── End call ──────────────────────────────────────────────────────────────
+  const handleEndCall = useCallback(async () => {
+    await vapi.stop()
+    // call-end event will handle state reset
+  }, [])
+
+  const canStart     = !isConnecting && !isConnected
+  const isActive     = isConnected
+
   function handleOpenChange(next: boolean) {
-    if (!next && isActive) return   // block close mid-call
+    if (!next && isActive) return  // block backdrop-close while call is live
     if (!next) onClose()
   }
 
@@ -133,7 +145,7 @@ export default function AgentCallModal({ open, onClose }: Props) {
           aria-describedby={undefined}
           className="fixed top-1/2 left-1/2 z-50 w-full max-w-[min(400px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-[#FF7900]/15 bg-[#080808] shadow-[0_0_80px_rgba(255,121,0,0.08),0_16px_48px_rgba(0,0,0,0.9)] focus:outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-250"
         >
-          {/* Close — only shown when not mid-call */}
+          {/* Close — hidden while call is live */}
           {!isActive && !isConnecting && (
             <RadixDialog.Close
               className="absolute top-4 right-4 text-[#444] hover:text-[#888] transition-colors z-10"
@@ -161,7 +173,7 @@ export default function AgentCallModal({ open, onClose }: Props) {
                 colors={['#1a0d00', '#3d1a00']}
                 agentState={agentState}
                 volumeMode="manual"
-                manualInput={isMuted ? 0 : inputRef.current}
+                manualInput={inputRef.current}
                 manualOutput={outputRef.current}
                 className="w-full h-full"
               />
@@ -169,13 +181,13 @@ export default function AgentCallModal({ open, onClose }: Props) {
 
             {/* Status */}
             <p className="text-[#555] text-xs tracking-widest uppercase">
-              {STATUS_LABELS[callStatus]}
+              {statusText}
             </p>
 
             {/* Controls */}
             <div className="flex items-center gap-3">
 
-              {/* Mute toggle — only during active call */}
+              {/* Mute — only during active call */}
               {isActive && (
                 <button
                   onClick={() => setIsMuted(m => !m)}
@@ -189,19 +201,25 @@ export default function AgentCallModal({ open, onClose }: Props) {
                 </button>
               )}
 
-              {/* Start / End */}
-              {canStart ? (
+              {/* Connect */}
+              {canStart && (
                 <button
                   onClick={handleStartCall}
                   className="px-7 py-2.5 rounded-full border border-[#c85a20] bg-transparent text-[#e86c2c] text-sm font-medium tracking-wide hover:bg-[#c85a20]/10 transition-colors"
                 >
                   Connect
                 </button>
-              ) : isConnecting ? (
+              )}
+
+              {/* Connecting — disabled pill */}
+              {isConnecting && (
                 <button disabled className="px-7 py-2.5 rounded-full border border-[#c85a20]/40 text-[#e86c2c]/40 text-sm font-medium tracking-wide cursor-not-allowed">
                   Connecting…
                 </button>
-              ) : isActive ? (
+              )}
+
+              {/* End call */}
+              {isActive && (
                 <button
                   onClick={handleEndCall}
                   className="w-10 h-10 rounded-full bg-red-900/40 border border-red-800/60 flex items-center justify-center text-red-400 hover:bg-red-900/60 transition-all"
@@ -209,7 +227,7 @@ export default function AgentCallModal({ open, onClose }: Props) {
                 >
                   <PhoneOff className="w-4 h-4" />
                 </button>
-              ) : null}
+              )}
             </div>
 
           </div>

@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
 import ComplianceModal from "@/components/ComplianceModal"
+import SitePortfolioModal from "@/components/portfolio/SitePortfolioModal"
 import StagedLeadForm from "@/components/StagedLeadForm"
 import ScreeningModal from "@/components/ScreeningModal"
 import { StarsBackground } from "@/components/animate-ui/components/backgrounds/stars"
@@ -119,7 +120,8 @@ export default function HeroPage() {
         <div className="mb-3 pointer-events-auto">
           <SpeakWithAgentButton />
         </div>
-        <div className="mb-2 pointer-events-auto">
+        <div className="mb-2 pointer-events-auto flex items-center gap-4">
+          <SitePortfolioModal />
           <ComplianceModal />
         </div>
         <p className="text-[#888] text-xs tracking-wide pointer-events-auto">
