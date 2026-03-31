@@ -163,7 +163,7 @@ export default function AgentCallModal({ open, onClose }: Props) {
                 Talk with an Agent
               </RadixDialog.Title>
               <p className="text-[#555] text-xs leading-relaxed max-w-[260px]">
-                Live voice connection to your autonomous employee
+                You'll be speaking with Lara
               </p>
             </div>
 
