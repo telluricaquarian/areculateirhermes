@@ -16,22 +16,22 @@ import {
 const PROJECTS = [
   {
     name: 'AvantSavant',
-    description: 'AI-powered research & ideation platform',
+    description: 'Edu. Site for the Aquarian Age',
     src: '/avantsavant.png',
   },
   {
     name: 'IdeationStation',
-    description: 'Collaborative concept generation tool',
+    description: 'Creative Direction & Branding Site Aid',
     src: '/ideationstationthumbnail.png',
   },
   {
     name: 'Areculateir',
-    description: 'Autonomous employee deployment suite',
+    description: 'W.a.a.S & A.I Agency',
     src: '/areculateirthumbnail.png',
   },
   {
     name: 'Negentropic AI',
-    description: 'Agentic intelligence infrastructure',
+    description: 'IDE Built Automations',
     src: '/naithumbnail.png',
   },
 ]
