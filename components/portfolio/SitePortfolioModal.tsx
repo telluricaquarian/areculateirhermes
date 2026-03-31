@@ -34,6 +34,16 @@ const PROJECTS = [
     description: 'IDE Built Automations',
     src: '/naithumbnail.png',
   },
+  {
+    name: 'TheThinkingSpirit',
+    description: 'Kangen Water Edu. / Landing Page',
+    src: '/thethinkingspirit.png',
+  },
+  {
+    name: 'Quote Template',
+    description: 'High-End Quote Request Interface',
+    src: '/quotetemplate.png',
+  },
 ]
 
 export default function SitePortfolioModal() {
