@@ -69,7 +69,7 @@ export default function HeroPage() {
 
       {/* ── Spartan hero — z-10, above atmosphere, below content ── */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 pointer-events-none w-[260px] h-[380px] md:w-[400px] md:h-[540px] lg:w-[480px] lg:h-[640px]">
-        <Image src="/blackspartan.png" alt="Hero" fill className="object-cover object-top" />
+        <Image src="/orangeagent.png" alt="Hero" fill className="object-cover object-top" />
       </div>
 
       {/* ── Foreground content — z-20, above Spartan and atmosphere ── */}
