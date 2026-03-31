@@ -8,6 +8,7 @@ import { StarsBackground } from "@/components/animate-ui/components/backgrounds/
 import RotatingHeadline from "@/components/hero/RotatingHeadline"
 import SpeakWithAgentButton from "@/components/SpeakWithAgentButton"
 import SydneyTime from "@/components/system/SydneyTime"
+import AreculateirLink from "@/components/portfolio/AreculateirLink"
 
 export default function HeroPage() {
   return (
@@ -120,14 +121,7 @@ export default function HeroPage() {
         </div>
         <p className="text-[#888] text-xs tracking-wide pointer-events-auto">
           Brought to you by{" "}
-          <a
-            href="https://www.areculateir.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#e86c2c] hover:text-[#FF7900] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#FF7900]/60 rounded-sm"
-          >
-            Areculateir.com
-          </a>
+          <AreculateirLink />
         </p>
         <p className="mt-1 text-[#444] text-[10px] tracking-widest pointer-events-auto">
           ©2026
