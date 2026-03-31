@@ -81,6 +81,13 @@ export default function ComplianceModal() {
             </Section>
 
             <div>
+              <SectionHeading>Implementation Stack</SectionHeading>
+              <p className="text-white/60 text-xs leading-relaxed">
+                Next.js · React · TypeScript · Tailwind CSS · shadcn/ui · Vercel · Vapi
+              </p>
+            </div>
+
+            <div>
               <SectionHeading>Provider References</SectionHeading>
               <ul className="mt-2 space-y-2">
                 {PROVIDERS.map(({ label, href }) => (
