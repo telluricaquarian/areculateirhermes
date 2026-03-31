@@ -5,7 +5,7 @@ import SitePortfolioModal from "@/components/portfolio/SitePortfolioModal"
 import StagedLeadForm from "@/components/StagedLeadForm"
 import ScreeningModal from "@/components/ScreeningModal"
 import { StarsBackground } from "@/components/animate-ui/components/backgrounds/stars"
-import { EncryptedText } from "@/components/ui/encrypted-text"
+import RotatingHeadline from "@/components/hero/RotatingHeadline"
 import SpeakWithAgentButton from "@/components/SpeakWithAgentButton"
 import SydneyTime from "@/components/system/SydneyTime"
 
@@ -91,13 +91,7 @@ export default function HeroPage() {
 
       {/* Headline */}
       <h1 className="mt-3 md:mt-8 text-white text-base sm:text-xl md:text-2xl font-semibold text-center tracking-[-0.04em] px-6 sm:whitespace-nowrap">
-        <EncryptedText
-          text="Your own AI agent. 92 skills. Running 24/7."
-          encryptedClassName="text-[#444]"
-          revealedClassName="text-white"
-          revealDelayMs={40}
-          flipDelayMs={45}
-        />
+        <RotatingHeadline />
       </h1>
 
       {/* Staged Lead Capture */}
