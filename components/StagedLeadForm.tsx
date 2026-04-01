@@ -8,7 +8,7 @@ import { getEmailValidationStatus } from '@/lib/emailValidation'
 // Step definitions
 // ---------------------------------------------------------------------------
 const STEPS = [
-  { key: 'email',   placeholder: '*Enter Your Email',               type: 'email', cta: 'Continue', autocomplete: 'email' },
+  { key: 'email',   placeholder: '*Enter Your Email to Join the Waitlist',               type: 'email', cta: 'Continue', autocomplete: 'email' },
   { key: 'name',    placeholder: 'What should we call you?', type: 'text',  cta: 'Continue', autocomplete: 'name'  },
   { key: 'social',  placeholder: 'Best social handle',       type: 'text',  cta: 'Continue', autocomplete: 'off'   },
   { key: 'website', placeholder: 'Website or brand URL',     type: 'url',   cta: 'Finish',   autocomplete: 'url'   },

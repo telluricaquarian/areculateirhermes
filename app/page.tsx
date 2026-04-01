@@ -83,10 +83,15 @@ export default function HeroPage() {
       </div>
 
       {/* Announcement Pill */}
-      <div className="mt-3 md:mt-8 inline-flex items-center gap-2 px-4 py-1.5 md:py-2 rounded-full border border-[#FF7900]/60 bg-gradient-to-r from-black via-neutral-900 to-black shadow-[0_0_20px_rgba(255,121,0,0.25)]">
-        <ArrowRight className="w-4 h-4 text-[#e86c2c]" />
-        <span className="text-[#e86c2c] text-sm">
-          {"Let's set up your first autonomous employee"}
+      <div className="mt-3 md:mt-8 flex flex-col items-center gap-1.5">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 md:py-2 rounded-full border border-[#FF7900]/60 bg-gradient-to-r from-black via-neutral-900 to-black shadow-[0_0_20px_rgba(255,121,0,0.25)]">
+          <ArrowRight className="w-4 h-4 text-[#e86c2c]" />
+          <span className="text-[#e86c2c] text-sm">
+            {"Let's set up your first autonomous employee"}
+          </span>
+        </div>
+        <span className="text-[#F8F801]/85 text-[10px] uppercase tracking-[0.18em] select-none">
+          Waitlist Open — Limited Slots
         </span>
       </div>
 
@@ -101,7 +106,7 @@ export default function HeroPage() {
       </div>
 
       {/* Disclaimer */}
-      <p className="mt-2 md:mt-4 text-[#666] text-xs text-center">
+      <p className="mt-2 md:mt-4 text-white/70 text-xs text-center">
         *Results may vary. Custom setup required.
       </p>
 
