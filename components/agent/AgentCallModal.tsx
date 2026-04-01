@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import * as RadixDialog from '@radix-ui/react-dialog'
 import { X, Mic, MicOff, PhoneOff } from 'lucide-react'
+import Image from 'next/image'
 import Vapi from '@vapi-ai/web'
 import { Orb, type AgentState } from '@/components/ui/orb'
 
@@ -163,26 +164,31 @@ export default function AgentCallModal({ open, onClose }: Props) {
         {/* Backdrop */}
         <RadixDialog.Overlay className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 duration-250" />
 
-        {/* Panel — narrow on mobile, two-column on desktop */}
+        {/* Outer content — transparent wrapper so card has its own visual boundary */}
         <RadixDialog.Content
           aria-describedby={undefined}
-          className="fixed top-1/2 left-1/2 z-50 w-full max-w-[min(400px,calc(100vw-2rem))] md:max-w-[min(760px,calc(100vw-4rem))] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-[#FF7900]/15 bg-[#080808] shadow-[0_0_80px_rgba(255,121,0,0.08),0_16px_48px_rgba(0,0,0,0.9)] overflow-y-auto max-h-[90dvh] focus:outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-250"
+          className="fixed top-1/2 left-1/2 z-50 w-full max-w-[min(400px,calc(100vw-2rem))] md:max-w-[min(740px,calc(100vw-4rem))] -translate-x-1/2 -translate-y-1/2 overflow-y-auto max-h-[90dvh] focus:outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-250"
         >
-          {/* Close — hidden while call is live */}
-          {!isActive && !isConnecting && (
-            <RadixDialog.Close
-              className="absolute top-4 right-4 text-[#444] hover:text-[#888] transition-colors z-10"
-              aria-label="Close"
-            >
-              <X className="w-4 h-4" />
-            </RadixDialog.Close>
-          )}
+          {/* ── Responsive container ──────────────────────────────────── */}
+          <div className="flex flex-col md:flex-row md:items-start gap-5 md:gap-8">
 
-          {/* ── Responsive two-column wrapper ─────────────────────────── */}
-          <div className="flex flex-col md:flex-row md:items-stretch">
+            {/* ── MOBILE ONLY: italic top line (above card) ─────────────── */}
+            <p className="md:hidden text-white/55 text-[11px] italic leading-relaxed text-center px-1">
+              Custom Concierge / Admin voice Agent Set-up Service also available as an ancillary or ad-hoc service.
+            </p>
 
-            {/* ── LEFT / TOP: Agent card ───────────────────────────────── */}
-            <div className="flex flex-col items-center px-8 pt-8 pb-8 gap-6 md:min-w-[320px] md:border-r md:border-[#1a1a1a]">
+            {/* ── Agent card — has its own rounded panel styling ────────── */}
+            <div className="relative rounded-2xl border border-[#FF7900]/15 bg-[#080808] shadow-[0_0_80px_rgba(255,121,0,0.08),0_16px_48px_rgba(0,0,0,0.9)] flex flex-col items-center px-8 pt-8 pb-8 gap-6 shrink-0 w-full md:w-auto md:min-w-[320px]">
+
+              {/* Close — anchored to card, hidden while call is live */}
+              {!isActive && !isConnecting && (
+                <RadixDialog.Close
+                  className="absolute top-4 right-4 text-[#444] hover:text-[#888] transition-colors z-10"
+                  aria-label="Close"
+                >
+                  <X className="w-4 h-4" />
+                </RadixDialog.Close>
+              )}
 
               {/* Header */}
               <div className="flex flex-col items-center gap-1.5 text-center">
@@ -190,7 +196,7 @@ export default function AgentCallModal({ open, onClose }: Props) {
                   Talk with an Agent
                 </RadixDialog.Title>
                 <p className="text-[#555] text-xs leading-relaxed max-w-[260px]">
-                  You'll be speaking with Lara
+                  You&apos;ll be speaking with Lara
                 </p>
               </div>
 
@@ -213,22 +219,15 @@ export default function AgentCallModal({ open, onClose }: Props) {
 
               {/* Controls */}
               <div className="flex items-center gap-3">
-
-                {/* Mute — only during active call */}
                 {isActive && (
                   <button
                     onClick={() => setIsMuted(m => !m)}
                     className="w-10 h-10 rounded-full border border-[#222] flex items-center justify-center text-[#555] hover:text-white hover:border-[#444] transition-all"
                     aria-label={isMuted ? 'Unmute' : 'Mute'}
                   >
-                    {isMuted
-                      ? <MicOff className="w-4 h-4" />
-                      : <Mic className="w-4 h-4" />
-                    }
+                    {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
                   </button>
                 )}
-
-                {/* Connect */}
                 {canStart && (
                   <button
                     onClick={handleStartCall}
@@ -237,15 +236,11 @@ export default function AgentCallModal({ open, onClose }: Props) {
                     Connect
                   </button>
                 )}
-
-                {/* Connecting — disabled pill */}
                 {isConnecting && (
                   <button disabled className="px-7 py-2.5 rounded-full border border-[#c85a20]/40 text-[#e86c2c]/40 text-sm font-medium tracking-wide cursor-not-allowed">
                     Connecting…
                   </button>
                 )}
-
-                {/* End call */}
                 {isActive && (
                   <button
                     onClick={handleEndCall}
@@ -259,20 +254,34 @@ export default function AgentCallModal({ open, onClose }: Props) {
 
             </div>{/* end agent card */}
 
-            {/* ── RIGHT / BOTTOM: Informational copy ──────────────────── */}
-            <div className="flex flex-col gap-5 px-7 pt-0 pb-8 border-t border-[#1a1a1a] md:border-t-0 md:pt-8 md:pl-8 md:pr-8 md:justify-center md:max-w-[320px]">
+            {/* ── MOBILE ONLY: info block below card ───────────────────── */}
+            <div className="md:hidden flex flex-col gap-3 px-1 pb-2">
+              <h3 className="text-white text-sm font-semibold tracking-tight">
+                Who is &quot;Lara&quot;?
+              </h3>
+              <p className="text-[#e86c2c]/90 text-xs leading-relaxed">
+                Lara is a custom Areculateir Directed Agent that can help to qualify whether our premium site build and or agentic implementation is suitable for your business.
+              </p>
+              <p className="text-white/30 text-[10px] leading-relaxed">
+                *Your call may be recorded and utilised for the training of the voice agent / model to help it better understand the clients we serve.
+              </p>
+            </div>
 
-              {/* Top italic service note */}
+            {/* ── DESKTOP ONLY: right info column ──────────────────────── */}
+            <div className="hidden md:flex flex-col gap-5 justify-center py-2 max-w-[260px]">
+              {/* Italic service note */}
               <p className="text-white/55 text-[11px] italic leading-relaxed">
                 Custom Concierge / Admin voice Agent Set-up Service also available as an ancillary or ad-hoc service.
               </p>
-
-              {/* Aa mark — desktop only */}
-              <span className="hidden md:block text-[#FF7900]/30 text-xs font-serif tracking-widest select-none">
-                Aa
-              </span>
-
-              {/* Who is Lara section */}
+              {/* Aa logo — existing /neworange.png asset */}
+              <Image
+                src="/neworange.png"
+                alt="Areculateir"
+                width={28}
+                height={28}
+                className="object-contain opacity-60"
+              />
+              {/* Who is Lara */}
               <div className="flex flex-col gap-2">
                 <h3 className="text-white text-sm font-semibold tracking-tight">
                   Who is &quot;Lara&quot;?
@@ -281,15 +290,13 @@ export default function AgentCallModal({ open, onClose }: Props) {
                   Lara is a custom Areculateir Directed Agent that can help to qualify whether our premium site build and or agentic implementation is suitable for your business.
                 </p>
               </div>
-
-              {/* Recording disclaimer */}
+              {/* Disclaimer */}
               <p className="text-white/30 text-[10px] leading-relaxed mt-auto">
                 *Your call may be recorded and utilised for the training of the voice agent / model to help it better understand the clients we serve.
               </p>
+            </div>
 
-            </div>{/* end info block */}
-
-          </div>{/* end two-column wrapper */}
+          </div>{/* end responsive container */}
         </RadixDialog.Content>
       </RadixDialog.Portal>
     </RadixDialog.Root>
