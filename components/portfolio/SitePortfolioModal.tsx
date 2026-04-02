@@ -37,7 +37,7 @@ const PROJECTS = [
   {
     name: 'TheThinkingSpirit',
     description: 'Kangen Water Edu. / Landing Page',
-    src: '/thethinkingspirit.png',
+    src: '/ttslaptop.png',
   },
   {
     name: 'Quote Template',
