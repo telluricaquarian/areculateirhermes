@@ -279,7 +279,8 @@ export default function AgentCallModal({ open, onClose }: Props) {
                 alt="Areculateir"
                 width={28}
                 height={28}
-                className="object-contain opacity-60"
+                draggable={false}
+                className="object-contain opacity-60 pointer-events-none select-none [user-select:none] [-webkit-user-drag:none]"
               />
               {/* Who is Lara */}
               <div className="flex flex-col gap-2">

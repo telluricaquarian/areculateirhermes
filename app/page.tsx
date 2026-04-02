@@ -71,15 +71,22 @@ export default function HeroPage() {
 
       {/* ── Spartan hero — z-10, above atmosphere, below content ── */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 pointer-events-none w-[260px] h-[380px] md:w-[400px] md:h-[540px] lg:w-[480px] lg:h-[640px]">
-        <Image src="/orangeagent.png" alt="Hero" fill className="object-cover object-top" />
+        <Image src="/orangeagent.png" alt="Hero" fill draggable={false} className="object-cover object-top [user-select:none] [-webkit-user-drag:none]" />
       </div>
 
       {/* ── Foreground content — z-20, above Spartan and atmosphere ── */}
       <div className="relative z-20 flex flex-col items-center w-full">
 
       {/* Logo */}
-      <div className="mt-5 md:mt-12">
-        <Image src="/neworange.png" alt="Areculateir logo" width={36} height={36} className="object-contain md:w-10 md:h-10" />
+      <div className="mt-5 md:mt-12 pointer-events-none select-none">
+        <Image
+          src="/neworange.png"
+          alt="Areculateir logo"
+          width={36}
+          height={36}
+          draggable={false}
+          className="object-contain md:w-10 md:h-10 [user-select:none] [-webkit-user-drag:none]"
+        />
       </div>
 
       {/* Announcement Pill */}
