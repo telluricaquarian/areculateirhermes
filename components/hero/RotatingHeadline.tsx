@@ -5,7 +5,7 @@ import { EncryptedText } from '@/components/ui/encrypted-text'
 
 const HEADLINES = [
   'Your own AI agent. 92 skills. Running 24/7.',
-  'Premium Custom Website Build',
+  'W.a.a.S - Premium Custom Website Build',
 ]
 
 const REVEAL_DELAY_MS = 40
