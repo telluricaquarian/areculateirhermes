@@ -86,7 +86,7 @@ export default function SitePortfolioModal() {
               {PROJECTS.map(({ name, description, src }) => (
                 <div
                   key={name}
-                  className="group relative flex flex-col gap-2 rounded-lg border border-[#1f1f1f] hover:border-[#FF7900]/30 bg-[#0a0a0a] overflow-hidden transition-colors duration-200"
+                  className="group relative flex flex-col gap-2 rounded-lg border border-[#1f1f1f] hover:border-[#FF7900]/40 bg-[#0a0a0a] transition-all duration-300 hover:shadow-[0_0_22px_rgba(255,121,0,0.30),0_0_8px_rgba(255,121,0,0.15)]"
                   onMouseMove={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect()
                     e.currentTarget.style.setProperty('--glow-x', `${e.clientX - rect.left}px`)
