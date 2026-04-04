@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { GlowingEffect } from '@/components/ui/glowing-effect'
 
 const PROJECTS = [
   {
@@ -85,8 +86,14 @@ export default function SitePortfolioModal() {
               {PROJECTS.map(({ name, description, src }) => (
                 <div
                   key={name}
-                  className="group flex flex-col gap-2 rounded-lg border border-[#1f1f1f] hover:border-[#FF7900]/30 bg-[#0a0a0a] overflow-hidden transition-colors duration-200"
+                  className="group relative flex flex-col gap-2 rounded-lg border border-[#1f1f1f] hover:border-[#FF7900]/30 bg-[#0a0a0a] overflow-hidden transition-colors duration-200"
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect()
+                    e.currentTarget.style.setProperty('--glow-x', `${e.clientX - rect.left}px`)
+                    e.currentTarget.style.setProperty('--glow-y', `${e.clientY - rect.top}px`)
+                  }}
                 >
+                  <GlowingEffect />
                   <div className="relative w-full aspect-video overflow-hidden">
                     <Image
                       src={src}
