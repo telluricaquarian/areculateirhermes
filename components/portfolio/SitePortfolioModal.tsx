@@ -22,7 +22,7 @@ const PROJECTS = [
   {
     name: 'IdeationStation',
     description: 'Creative Direction & Branding Site Aid',
-    src: '/ideationstationthumbnail.png',
+    src: '/isting.png',
   },
   {
     name: 'Areculateir',
