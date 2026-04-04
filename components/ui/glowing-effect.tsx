@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
 export function GlowingEffect({
   className,
   spread = 110,
-  color = 'rgba(255, 121, 0, 0.32)',
+  color = 'rgba(255, 121, 0, 0.50)',
 }: {
   className?: string
   /** Radial gradient radius in px */
@@ -30,7 +30,6 @@ export function GlowingEffect({
       )}
       style={{
         background: `radial-gradient(circle ${spread}px at var(--glow-x, 50%) var(--glow-y, 50%), ${color}, transparent 65%)`,
-        mixBlendMode: 'screen',
       }}
     />
   )
