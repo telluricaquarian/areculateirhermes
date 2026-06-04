@@ -22,7 +22,7 @@ export default function StudioPage() {
       className={`
         ${neueMontreal.className}
         relative min-h-screen
-        bg-gradient-to-b from-[#f5f4f1] via-[#c8c6bf] to-[#080808]
+        bg-gradient-to-b from-[#d6d7db] via-[#86878c] to-[#050505]
         flex flex-col items-center overflow-hidden
       `}
     >
@@ -30,10 +30,10 @@ export default function StudioPage() {
       {/* ── Atmospheric background ── */}
       <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
 
-        {/* Orb 1 — soft warm grey, top-right */}
+        {/* Orb 1 — cool silver, top-right */}
         <div
           className="orb-drift-1 absolute -top-32 -right-32 w-[700px] h-[700px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(210,208,202,0.35) 0%, transparent 70%)', filter: 'blur(100px)' }}
+          style={{ background: 'radial-gradient(circle, rgba(200,202,208,0.35) 0%, transparent 70%)', filter: 'blur(100px)' }}
         />
         {/* Orb 2 — pale cool white, mid-left */}
         <div
@@ -52,8 +52,8 @@ export default function StudioPage() {
             backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
             backgroundRepeat: 'repeat',
             backgroundSize: '280px 280px',
-            opacity: 0.06,
-            mixBlendMode: 'soft-light',
+            opacity: 0.09,
+            mixBlendMode: 'overlay',
           }}
         />
       </div>
