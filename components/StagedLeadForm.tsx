@@ -8,21 +8,20 @@ import { getEmailValidationStatus } from '@/lib/emailValidation'
 // Step definitions
 // ---------------------------------------------------------------------------
 const STEPS = [
-  { key: 'email',   placeholder: '*Enter Your Email to Join the Waitlist',               type: 'email', cta: 'Continue', autocomplete: 'email' },
-  { key: 'name',    placeholder: 'What should we call you?', type: 'text',  cta: 'Continue', autocomplete: 'name'  },
-  { key: 'social',  placeholder: 'Best social handle',       type: 'text',  cta: 'Continue', autocomplete: 'off'   },
-  { key: 'website', placeholder: 'Website or brand URL',     type: 'url',   cta: 'Finish',   autocomplete: 'url'   },
+  { key: 'email',   placeholder: '*Enter Your Email to Join the Waitlist', type: 'email', cta: 'Continue', autocomplete: 'email' },
+  { key: 'name',    placeholder: 'What should we call you?',               type: 'text',  cta: 'Continue', autocomplete: 'name'  },
+  { key: 'social',  placeholder: 'Best social handle',                     type: 'text',  cta: 'Continue', autocomplete: 'off'   },
+  { key: 'website', placeholder: 'Website or brand URL',                   type: 'url',   cta: 'Finish',   autocomplete: 'url'   },
 ] as const
 
 type StepKey = (typeof STEPS)[number]['key']
 type FormData = Record<StepKey, string>
 
 // ---------------------------------------------------------------------------
-// Persistence helper
-// Calls /api/leads with the current partial lead payload.
-// Fire-and-forget — errors are silenced to avoid blocking UX.
+// Persistence helper — calls /api/leads with the current partial lead payload.
+// Fire-and-forget; errors are silenced to avoid blocking UX.
 // ---------------------------------------------------------------------------
-async function saveLead(payload: Partial<FormData> & { completedStep: number }) {
+async function saveLead(payload: Partial<FormData> & { completedStep: number; source: string }) {
   try {
     await fetch('/api/leads', {
       method: 'POST',
@@ -35,11 +34,11 @@ async function saveLead(payload: Partial<FormData> & { completedStep: number }) 
 }
 
 // ---------------------------------------------------------------------------
-// Google Sheets webhook — fires on final step completion.
-// Uses no-cors because Google Apps Script webhooks don't return CORS headers.
-// Opaque response is expected; errors are silenced to avoid blocking UX.
+// Google Sheets webhook — fires on every step so email is captured immediately
+// and the row is enriched as the user progresses.
+// Uses no-cors because Apps Script webhooks don't return CORS headers.
 // ---------------------------------------------------------------------------
-async function submitToSheets(data: FormData) {
+async function submitToSheets(data: FormData, source: string) {
   const url = process.env.NEXT_PUBLIC_HERMES_SHEET_WEBHOOK_URL
   if (!url) return
   try {
@@ -55,7 +54,7 @@ async function submitToSheets(data: FormData) {
         website:         data.website,
         emailValidation: emailStatus,
         submittedAt:     new Date().toISOString(),
-        source:          'areculateirhermes',
+        source,
       }),
     })
   } catch {
@@ -68,9 +67,25 @@ const pause = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
 type SpecialPhase = 'email-confirmed' | 'complete' | null
 
 // ---------------------------------------------------------------------------
+// Props
+// variant       — 'dark' (default, orange accents) | 'light' (monochrome)
+// source        — value written to the "source" column in the sheet
+// emailPlaceholder — overrides the default email step placeholder text
+// ---------------------------------------------------------------------------
+type Props = {
+  variant?:          'dark' | 'light'
+  source?:           string
+  emailPlaceholder?: string
+}
+
+// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
-export default function StagedLeadForm() {
+export default function StagedLeadForm({
+  variant          = 'dark',
+  source           = 'areculateirhermes',
+  emailPlaceholder,
+}: Props) {
   const [step, setStep]         = useState(0)
   const [formData, setFormData] = useState<FormData>({ email: '', name: '', social: '', website: '' })
   const [value, setValue]       = useState('')
@@ -82,6 +97,7 @@ export default function StagedLeadForm() {
 
   const current = STEPS[step]
   const isLast  = step === STEPS.length - 1
+  const isLight = variant === 'light'
 
   // ── Validation ────────────────────────────────────────────────────────────
   function validate(): boolean {
@@ -122,12 +138,8 @@ export default function StagedLeadForm() {
     const updated: FormData = { ...formData, [current.key]: value.trim() }
     setFormData(updated)
 
-    // Save partial lead immediately on every step
-    await saveLead({ ...updated, completedStep: step + 1 })
-
-    // Send to Google Sheets on every step — captures email immediately,
-    // then updates the row with richer data as the user progresses.
-    submitToSheets(updated)
+    await saveLead({ ...updated, completedStep: step + 1, source })
+    submitToSheets(updated, source)
 
     if (isLast) {
       await transition(() => setPhase('complete'))
@@ -177,6 +189,8 @@ export default function StagedLeadForm() {
     transition: 'opacity 0.18s ease, filter 0.18s ease, transform 0.18s ease',
   }
 
+  const placeholder = step === 0 && emailPlaceholder ? emailPlaceholder : current.placeholder
+
   return (
     <div className="w-full max-w-[280px] flex flex-col items-center">
 
@@ -189,10 +203,13 @@ export default function StagedLeadForm() {
             style={{
               height: '5px',
               width:  i === step ? '14px' : '5px',
-              background:
-                i === step  ? '#e86c2c' :
-                i < step    ? 'rgba(232,108,44,0.3)' :
-                              'rgba(255,255,255,0.1)',
+              background: isLight
+                ? i === step ? '#171717'
+                : i < step   ? 'rgba(23,23,23,0.25)'
+                :               'rgba(0,0,0,0.08)'
+                : i === step ? '#e86c2c'
+                : i < step   ? 'rgba(232,108,44,0.3)'
+                :               'rgba(255,255,255,0.1)',
             }}
           />
         ))}
@@ -203,32 +220,56 @@ export default function StagedLeadForm() {
 
         {phase === 'complete' ? (
           <div className="text-center py-3">
-            <p className="text-white text-sm font-medium tracking-tight">You&apos;re on the list.</p>
-            <p className="text-[#555] text-xs mt-1.5">We&apos;ll be in touch soon.</p>
+            <p className={`text-sm font-medium tracking-tight ${isLight ? 'text-neutral-900' : 'text-white'}`}>
+              You&apos;re on the list.
+            </p>
+            <p className={`text-xs mt-1.5 ${isLight ? 'text-neutral-500' : 'text-[#555]'}`}>
+              We&apos;ll be in touch soon.
+            </p>
           </div>
 
         ) : phase === 'email-confirmed' ? (
           <div className="text-center py-3">
-            <p className="text-[#e86c2c] text-sm">Nice — let&apos;s personalize this.</p>
+            <p className={`text-sm ${isLight ? 'text-neutral-600' : 'text-[#e86c2c]'}`}>
+              Nice — let&apos;s personalize this.
+            </p>
           </div>
 
         ) : (
           <div className="flex flex-col gap-2.5">
-            <LiquidMetalInput
-              ref={inputRef}
-              type={current.type}
-              value={value}
-              onChange={e => { setValue(e.target.value); setError('') }}
-              onKeyDown={e => { if (e.key === 'Enter') handleContinue() }}
-              placeholder={current.placeholder}
-              aria-label={current.placeholder}
-              autoComplete={current.autocomplete}
-              autoFocus={step === 0}
-            />
+            {isLight ? (
+              <input
+                ref={inputRef}
+                type={current.type}
+                value={value}
+                onChange={e => { setValue(e.target.value); setError('') }}
+                onKeyDown={e => { if (e.key === 'Enter') handleContinue() }}
+                placeholder={placeholder}
+                aria-label={current.placeholder}
+                autoComplete={current.autocomplete}
+                autoFocus={step === 0}
+                className="w-full px-5 py-3 rounded-full border border-neutral-300 bg-white/80 backdrop-blur-sm text-sm text-neutral-900 placeholder:text-neutral-400 outline-none focus:border-neutral-600 transition-colors"
+              />
+            ) : (
+              <LiquidMetalInput
+                ref={inputRef}
+                type={current.type}
+                value={value}
+                onChange={e => { setValue(e.target.value); setError('') }}
+                onKeyDown={e => { if (e.key === 'Enter') handleContinue() }}
+                placeholder={placeholder}
+                aria-label={current.placeholder}
+                autoComplete={current.autocomplete}
+                autoFocus={step === 0}
+              />
+            )}
             <button
               onClick={handleContinue}
               disabled={busy}
-              className="px-6 py-2.5 rounded-full border border-[#c85a20] bg-transparent text-[#e86c2c] text-sm font-medium tracking-wide hover:bg-[#c85a20]/10 transition-colors disabled:opacity-40"
+              className={isLight
+                ? 'px-6 py-2.5 rounded-full bg-neutral-900 text-white text-sm font-medium tracking-wide hover:bg-neutral-700 active:scale-[0.98] transition-all disabled:opacity-40'
+                : 'px-6 py-2.5 rounded-full border border-[#c85a20] bg-transparent text-[#e86c2c] text-sm font-medium tracking-wide hover:bg-[#c85a20]/10 transition-colors disabled:opacity-40'
+              }
             >
               {current.cta}
             </button>
@@ -246,7 +287,7 @@ export default function StagedLeadForm() {
         <button
           onClick={handleBack}
           disabled={busy}
-          className="mt-2.5 text-[#383838] text-xs hover:text-[#555] transition-colors disabled:opacity-30"
+          className={`mt-2.5 text-xs transition-colors disabled:opacity-30 ${isLight ? 'text-neutral-400 hover:text-neutral-600' : 'text-[#383838] hover:text-[#555]'}`}
         >
           ← back
         </button>
@@ -254,8 +295,10 @@ export default function StagedLeadForm() {
 
       {/* ── Microcopy ── */}
       {phase !== 'complete' && (
-        <p className="mt-3 text-[#e86c2c]/80 text-[10px] text-center tracking-wide">
-          Your details are saved to a waitlist. We save your progress as you go.
+        <p className={`mt-3 text-[10px] text-center tracking-wide ${isLight ? 'text-neutral-400' : 'text-[#e86c2c]/80'}`}>
+          {isLight
+            ? 'Your details are saved as you go.'
+            : 'Your details are saved to a waitlist. We save your progress as you go.'}
         </p>
       )}
     </div>
